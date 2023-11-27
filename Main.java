@@ -10,11 +10,11 @@ import java.util.Hashtable;
 public class Main {
   
   public static String sameCharacter(String chr, int occurences) {
-     String l = "";
-     for (int i = 0; i < occurences; ++i) {
-     l += chr;
-     }
-  return l;
+    String l = "";
+    for (int i = 0; i < occurences; ++i) {
+      l += chr;
+    }
+    return l;
   }
 
   public static String col(int colorNb) {
@@ -98,8 +98,8 @@ public class Main {
         "█ Nom : " + zooObj.getZooName() + "\n" +
         "█ Maître : " + zooObj.getMaster().getMasterName() + "\n" +
         "█ Nombre max enclos : " + zooObj.getMaxEnclosuresNb() + "\n" +
-        "█ Enclos existants : " + zooObj.getEnclosures().size() + "\n" +
-        sameCharacter("█", 30));
+        "█ Enclos existants : " + zooObj.getEnclosures().size() 
+      );
     }
     if (category == "MAÎTRE") {
       System.out.println(
@@ -113,8 +113,8 @@ public class Main {
         "█-MAÎTRE" + sameCharacter("-", 21) + "█\n" +
         "█ Nom : " + zooObj.getMaster().getMasterName() + "\n" +
         "█ Sexe : " + zooObj.getMaster().getGender() + "\n" +
-        "█ Âge : " + zooObj.getMaster().getAge() + "\n" +
-        sameCharacter("█", 30));
+        "█ Âge : " + zooObj.getMaster().getAge() 
+      );
     }
     if (category == "ENCLOS") {
       System.out.println(
@@ -131,8 +131,8 @@ public class Main {
         "█ Nombre max créatures : " + enclosureObj.getMaxCreaturesNb() + "\n" +
         "█ Nombre créatures : " + enclosureObj.getCreatures().size() + "\n" +
         "█ Créatures : " + "\n" +
-        "█ Degré propreté : " + enclosureObj.getCleanliness() + "\n" +
-        sameCharacter("█", 30));
+        "█ Degré propreté : " + enclosureObj.getCleanliness()
+      );
     }
     if (category == "CRÉATURE") {
       System.out.println(
@@ -152,8 +152,19 @@ public class Main {
         "█ Faim : " + creatureObj.getHungryIndicator() + "%" + "\n" +
         "█ Sommeil : " + creatureObj.getSleepIndicator() + "\n" +
         "█ Santé : " + creatureObj.getHealthIndicator() + "%" + "\n" +
-        "█ Mode reproduction : " + "\n" +
-        sameCharacter("█", 30));
+        "█ Mode reproduction : " + creatureObj.initReproductionMode()  
+      );
+      if (creatureObj.getSpeciesName() == "lycanthrope") {
+        System.out.println(
+          "█ Force : " + "\n" +
+          "█ Facteur de domination : " + "\n" +
+          "█ Rang de domination : " + "\n" +
+          "█ Niveau : " + "\n" +
+          "█ Facteur d'impétuosité : " + "\n" +
+          "█ Meute : " + "\n" +
+          "█ Catégorie d'âge : "
+        );
+      }
     }
     if (category == "ACTION") {
       System.out.println(
@@ -165,14 +176,16 @@ public class Main {
         "█ > Action <" + sameCharacter(" ", 17) + "█" + "\n" +
         sameCharacter("█", 30) + "\n" +
         "█-ACTION" + sameCharacter("-", 21) + "█\n" +
-        "█ [aj/AJ] Ajouter créature" + sameCharacter(" ", 3) + "█" + "\n" +
-        "█ [el/EL] Enlever créature" + sameCharacter(" ", 3) + "█" + "\n" +
-        "█ [sg/SG] Soigner créature" + sameCharacter(" ", 3) + "█" + "\n" +
-        "█ [nr/NR] Nourrir créatures" + sameCharacter(" ", 2) + "█" + "\n" +
-        "█ [tr/TR] Transférer créature" + "█" + "\n" +
-        "█ [et/ET] Entretenir enclos" + sameCharacter(" ", 2) + "█" + "\n" +
-        sameCharacter("█", 30));
+        "█ [ajt] Ajouter créature\n" +
+        "█ [elv] Enlever créature\n" +
+        "█ [sgn] Soigner créature\n" +
+        "█ [nrr] Nourrir créatures\n" +
+        "█ [tfr] Transférer créature\n" +
+        "█ [ett] Entretenir enclos"
+      );
     }
+
+    System.out.println(sameCharacter("█", 30));
   }
   
   public static String scanKeys(Scanner scannerName) {
@@ -187,6 +200,25 @@ public class Main {
     System.out.print("\033[H\033[2J");
     System.out.flush();
   }
+
+  public static void aleaPack(List<Lycanthrope> lycList, Enclosure lycEnclosureName, Creature lycAlphaMale, Creature lycAlphaFemale) {
+    for (int i = 0; i < lycEnclosureName.getCreatures().size(); ++i) {
+      if (lycEnclosureName.getCreatures().get(i) == lycAlphaMale || lycEnclosureName.getCreatures().get(i) == lycAlphaFemale) {
+        lycList.add(new Lycanthrope(lycEnclosureName.getCreatures().get(i), (int) Math.round(30 + (Math.random() * 70)), 1, "α", 1, (int) Math.round(30 + (Math.random() * 70)), (Math.random() < 0.8) ? true : false));
+      }
+      else {
+        lycList.add(new              Lycanthrope(lycEnclosureName.getCreatures().get(i), (int) Math.round(30 + (Math.random() * 70)), 1, (Math.random() < 0.7) ? "β" : "ω", 1, (int) Math.round(30 + (Math.random() * 70)), (Math.random() < 0.8) ? true : false));
+      }
+    }
+  }
+
+  public static Enclosure enclosParam(List<FantasticZoo> zoosList, int zooI, int enclosI) { //obtenir le nom d'un objet Enclosure
+    return zoosList.get(zooI).getEnclosures().get(enclosI);
+  }
+
+  public static Creature creatParam(List<FantasticZoo> zoosList, int zooI, int enclosI, int creatI) { //obtenir le nom d'un objet Creature
+    return zoosList.get(zooI).getEnclosures().get(enclosI).getCreatures().get(creatI);
+  }
   
   public static void main(String[] args) {
 
@@ -194,17 +226,17 @@ public class Main {
     Creature lyc1 = new Creature("lycanthrope", "femelle", 65, 167, 27, 78, false, 82, "aooooouuuuuh");
     Creature lyc2 = new Creature("lycanthrope", "mâle", 67.5, 177, 47, 78, false, 82, "aooooouuuuuh");
     Creature lyc3 = new Creature("lycanthrope", "femelle", 72, 165, 14, 78, false, 82, "aooooouuuuuh");
-    Creature lyc4 = new Creature("lycanthrope", "mâle", 75, 173, 17, 78, false, 82, "aooooouuuuuh");
+    Creature lyc4 = new Creature("lycanthrope", "mâle", 75, 173, 17, 78, true, 82, "aooooouuuuuh");
     Creature lyc5 = new Creature("lycanthrope", "femelle", 71.5, 171, 24, 78, false, 82, "aooooouuuuuh");
     Creature lyc6 = new Creature("lycanthrope", "mâle", 79, 166.5, 25, 78, false, 82, "aooooouuuuuh");
     Creature lyc7 = new Creature("lycanthrope", "femelle", 62.5, 166, 18, 78, false, 82, "aooooouuuuuh");
     Creature lyc8 = new Creature("lycanthrope", "mâle", 69, 179, 36, 78, false, 82, "aooooouuuuuh");
-    Creature lyc9 = new Creature("lycanthrope", "femelle", 70.5, 177, 49, 78, false, 82, "aooooouuuuuh");
+    Creature lyc9 = new Creature("lycanthrope", "femelle", 70.5, 177, 49, 78, true, 82, "aooooouuuuuh");
     Creature lyc10 = new Creature("lycanthrope", "mâle", 70, 176, 52, 78, false, 82, "aooooouuuuuh");
     Creature lyc11 = new Creature("lycanthrope", "femelle", 68, 161.5, 44, 78, false, 82, "aooooouuuuuh");
     Creature lyc12 = new Creature("lycanthrope", "mâle", 65, 176.25, 30, 78, false, 82, "aooooouuuuuh");
     Creature lyc13 = new Creature("lycanthrope", "femelle", 61, 160, 19, 78, false, 82, "aooooouuuuuh");
-    Creature lyc14 = new Creature("lycanthrope", "mâle", 78.25, 178, 22, 78, false, 82, "aooooouuuuuh");
+    Creature lyc14 = new Creature("lycanthrope", "mâle", 78.25, 178, 22, 78, true, 82, "aooooouuuuuh");
     Creature lyc15 = new Creature("lycanthrope", "femelle", 69, 164, 17, 78, false, 82, "aooooouuuuuh");
     Creature lyc16 = new Creature("lycanthrope", "mâle", 80, 193, 29, 78, false, 82, "aooooouuuuuh");
     Creature lyc17 = new Creature("lycanthrope", "femelle", 75, 162, 39, 78, false, 82, "aooooouuuuuh");
@@ -212,7 +244,7 @@ public class Main {
     Creature lyc19 = new Creature("lycanthrope", "femelle", 71, 185, 15, 78, false, 82, "aooooouuuuuh");
     Creature lyc20 = new Creature("lycanthrope", "mâle", 70, 181, 19, 78, false, 82, "aooooouuuuuh");
     Creature lyc21 = new Creature("lycanthrope", "femelle", 57, 162, 34, 78, false, 82, "aooooouuuuuh");
-    Creature lyc22 = new Creature("lycanthrope", "mâle", 86, 177, 40, 78, false, 82, "aooooouuuuuh");
+    Creature lyc22 = new Creature("lycanthrope", "mâle", 86, 177, 40, 78, true, 82, "aooooouuuuuh");
     Creature lyc23 = new Creature("lycanthrope", "femelle", 60, 158, 13, 78, false, 82, "aooooouuuuuh");
     Creature lyc24 = new Creature("lycanthrope", "mâle", 63.25, 171, 15, 78, false, 82, "aooooouuuuuh");
     Creature lyc25 = new Creature("lycanthrope", "femelle", 67, 163.25, 39, 78, false, 82, "aooooouuuuuh");
@@ -220,35 +252,35 @@ public class Main {
     Creature lyc27 = new Creature("lycanthrope", "femelle", 74, 174, 27, 78, false, 82, "aooooouuuuuh");
     Creature lyc28 = new Creature("lycanthrope", "mâle", 77, 179, 20, 78, false, 82, "aooooouuuuuh");
     Creature lyc29 = new Creature("lycanthrope", "femelle", 73.25, 172, 23, 78, false, 82, "aooooouuuuuh");
-    Creature lyc30 = new Creature("lycanthrope", "mâle", 66, 165, 36, 78, false, 82, "aooooouuuuuh");
+    Creature lyc30 = new Creature("lycanthrope", "mâle", 66, 165, 36, 78, true, 82, "aooooouuuuuh");
     Creature lyc31 = new Creature("lycanthrope", "femelle", 65.5, 164, 17, 78, false, 82, "aooooouuuuuh");
     Creature lyc32 = new Creature("lycanthrope", "mâle", 67.25, 168, 16, 78, false, 82, "aooooouuuuuh");
     Creature lyc33 = new Creature("lycanthrope", "femelle", 71, 169, 18, 78, false, 82, "aooooouuuuuh");
     Creature lyc34 = new Creature("lycanthrope", "mâle", 73, 173.5, 32, 78, false, 82, "aooooouuuuuh");
     Creature lyc35 = new Creature("lycanthrope", "femelle", 74, 172, 28, 78, false, 82, "aooooouuuuuh");
-    Creature lyc36 = new Creature("lycanthrope", "mâle", 62, 166, 26, 78, false, 82, "aooooouuuuuh");
+    Creature lyc36 = new Creature("lycanthrope", "mâle", 62, 166, 26, 78, true, 82, "aooooouuuuuh");
     Creature lyc37 = new Creature("lycanthrope", "femelle", 60, 163, 34, 78, false, 82, "aooooouuuuuh");
     Creature lyc38 = new Creature("lycanthrope", "mâle", 79, 176, 26, 78, false, 82, "aooooouuuuuh");
-    Creature lyc39 = new Creature("lycanthrope", "femelle", 83, 175, 17, 78, false, 82, "aooooouuuuuh");
+    Creature lyc39 = new Creature("lycanthrope", "femelle", 83, 175, 17, 78, true, 82, "aooooouuuuuh");
     Creature lyc40 = new Creature("lycanthrope", "mâle", 87, 179, 19, 78, false, 82, "aooooouuuuuh");
     Creature lyc41 = new Creature("lycanthrope", "femelle", 64, 168, 24, 78, false, 82, "aooooouuuuuh");
     Creature lyc42 = new Creature("lycanthrope", "mâle", 70.5, 169, 42, 78, false, 82, "aooooouuuuuh");
     Creature lyc43 = new Creature("lycanthrope", "femelle", 72.25, 165, 49, 78, false, 82, "aooooouuuuuh");
     Creature lyc44 = new Creature("lycanthrope", "mâle", 71, 170.25, 32, 78, false, 82, "aooooouuuuuh");
-    Creature lyc45 = new Creature("lycanthrope", "femelle", 76, 166, 20, 78, false, 82, "aooooouuuuuh");
+    Creature lyc45 = new Creature("lycanthrope", "femelle", 76, 166, 20, 78, true, 82, "aooooouuuuuh");
     Creature lyc46 = new Creature("lycanthrope", "mâle", 73, 176, 23, 78, false, 82, "aooooouuuuuh");
     Creature lyc47 = new Creature("lycanthrope", "femelle", 71, 176, 14, 78, false, 82, "aooooouuuuuh");
     Creature lyc48 = new Creature("lycanthrope", "mâle", 61, 186, 15, 78, false, 82, "aooooouuuuuh");
     Creature lyc49 = new Creature("lycanthrope", "femelle", 67.25, 166, 19, 78, false, 82, "aooooouuuuuh");
     Creature lyc50 = new Creature("lycanthrope", "mâle", 60.5, 155, 13, 78, false, 82, "aooooouuuuuh");
-    Creature lyc51 = new Creature("lycanthrope", "femelle", 73.5, 176, 29, 78, false, 82, "aooooouuuuuh");
+    Creature lyc51 = new Creature("lycanthrope", "femelle", 73.5, 176, 29, 78, true, 82, "aooooouuuuuh");
     Creature lyc52 = new Creature("lycanthrope", "mâle", 80, 187, 21, 78, false, 82, "aooooouuuuuh");
     Creature lyc53 = new Creature("lycanthrope", "femelle", 82, 173, 24, 78, false, 82, "aooooouuuuuh");
     Creature lyc54 = new Creature("lycanthrope", "mâle", 79, 186, 22, 78, false, 82, "aooooouuuuuh");
     Creature lyc55 = new Creature("lycanthrope", "femelle", 85, 174, 30, 78, false, 82, "aooooouuuuuh");
     Creature lyc56 = new Creature("lycanthrope", "mâle", 86, 196, 27, 78, false, 82, "aooooouuuuuh");
     Creature lyc57 = new Creature("lycanthrope", "femelle", 68, 153, 19, 78, false, 82, "aooooouuuuuh");
-    Creature lyc58 = new Creature("lycanthrope", "mâle", 71.25, 186, 27, 78, false, 82, "aooooouuuuuh");
+    Creature lyc58 = new Creature("lycanthrope", "mâle", 71.25, 186, 27, 78, true, 82, "aooooouuuuuh");
     Creature lyc59 = new Creature("lycanthrope", "femelle", 77, 172, 16, 78, false, 82, "aooooouuuuuh");
     Creature lyc60 = new Creature("lycanthrope", "mâle", 78, 178, 19, 78, false, 82, "aooooouuuuuh");
     Creature lyc61 = new Creature("lycanthrope", "femelle", 72, 166, 29, 78, false, 82, "aooooouuuuuh");
@@ -258,29 +290,29 @@ public class Main {
     Creature krak2 = new Creature("kraken", "mâle", 56000, 1400, 152, 30, false, 70, "WOOOOOOOOOOOOOOON");
 
     Creature sir0 = new Creature("sirène", "femelle", 60, 160, 21, 80, false, 100, "ooh");
-    Creature sir1 = new Creature("sirène", "femelle", 67, 170, 17, 80, false, 100, "ooh");
-    Creature sir2 = new Creature("sirène", "femelle", 62, 168, 15, 80, false, 100, "ooh");
+    Creature sir1 = new Creature("sirène", "femelle", 67, 170, 17, 80, true, 100, "ooh");
+    Creature sir2 = new Creature("sirène", "femelle", 62, 168, 15, 80, true, 100, "ooh");
     Creature sir3 = new Creature("sirène", "femelle", 59, 161, 19, 80, false, 100, "ooh");
     Creature sir4 = new Creature("sirène", "femelle", 64, 154, 18, 80, false, 100, "ooh");
     Creature sir5 = new Creature("sirène", "femelle", 67.5, 172, 22, 80, false, 100, "ooh");
-    Creature sir6 = new Creature("sirène", "femelle", 61, 166, 20, 80, false, 100, "ooh");
+    Creature sir6 = new Creature("sirène", "femelle", 61, 166, 20, 80, true, 100, "ooh");
     Creature sir7 = new Creature("sirène", "femelle", 58, 165, 25, 80, false, 100, "ooh");
     Creature sir8 = new Creature("sirène", "femelle", 69, 167, 27, 80, false, 100, "ooh");
     Creature sir9 = new Creature("sirène", "femelle", 72, 162, 20, 80, false, 100, "ooh");
     Creature sir10 = new Creature("sirène", "femelle", 61.25, 161, 23, 80, false, 100, "ooh");
 
     Creature phen0 = new Creature("phénix", "femelle", 7, 40, 2, 100, true, 100, "craaaah");
-    Creature phen1 = new Creature("phénix", "mâle", 9, 50, 1, 100, true, 100, "craaaah");
-    Creature phen2 = new Creature("phénix", "femelle", 8, 45, 3, 100, true, 100, "craaaah");
+    Creature phen1 = new Creature("phénix", "mâle", 9, 50, 1, 100, false, 100, "craaaah");
+    Creature phen2 = new Creature("phénix", "femelle", 8, 45, 3, 100, false, 100, "craaaah");
     Creature phen3 = new Creature("phénix", "mâle", 10, 57, 5, 100, true, 100, "craaaah");
-    Creature phen4 = new Creature("phénix", "femelle", 8.5, 55, 3, 100, true, 100, "craaaah");
+    Creature phen4 = new Creature("phénix", "femelle", 8.5, 55, 3, 100, false, 100, "craaaah");
 
     Creature drag0 = new Creature("dragon", "mâle", 5100, 1700, 48, 40, false, 100, "raaaaaaah");
     Creature drag1 = new Creature("dragon", "femelle", 5050, 1600, 48, 40, false, 100, "raaaaaaah");
     Creature drag2 = new Creature("dragon", "mâle", 5300, 1810, 48, 40, false, 100, "raaaaaaah");
     Creature drag3 = new Creature("dragon", "femelle", 5430, 1720, 48, 40, false, 100, "raaaaaaah");
     Creature drag4 = new Creature("dragon", "mâle", 5170, 1900, 48, 40, false, 100, "raaaaaaah");
-    Creature drag5 = new Creature("dragon", "femelle", 4980, 1560, 48, 40, false, 100, "raaaaaaah");
+    Creature drag5 = new Creature("dragon", "femelle", 4980, 1560, 48, 40, true, 100, "raaaaaaah");
     Creature drag6 = new Creature("dragon", "mâle", 5090, 1760, 48, 40, false, 100, "raaaaaaah");
     Creature drag7 = new Creature("dragon", "femelle", 4790, 1560, 48, 40, false, 100, "raaaaaaah");
     Creature drag8 = new Creature("dragon", "mâle", 5600, 1680, 48, 40, false, 100, "raaaaaaah");
@@ -343,6 +375,15 @@ public class Main {
     FantasticZoo zoo0 = new FantasticZoo("Zoo n°0", maitreA, 8, Arrays.asList(enclos0_0, enclos0_1, enclos0_2, enclos0_3, enclos0_4, enclos0_5));
     FantasticZoo zoo1 = new FantasticZoo("Zoo n°1", maitreB, 5, Arrays.asList(enclos1_0, enclos1_1, enclos1_2, enclos1_3));
     FantasticZoo zoo2 = new FantasticZoo("Zoo n°2", maitreC, 7, Arrays.asList(enclos2_0, enclos2_1, enclos2_2, enclos2_3, enclos2_4, enclos2_5, enclos2_6));
+
+    List<Lycanthrope> newLycClasses = new ArrayList<>();
+    aleaPack(newLycClasses, enclos0_0, lyc0, lyc3);
+    aleaPack(newLycClasses, enclos0_4, lyc7, lyc8);
+    aleaPack(newLycClasses, enclos1_1, lyc18, lyc21);
+    aleaPack(newLycClasses, enclos1_2, lyc26, lyc29);
+    aleaPack(newLycClasses, enclos2_2, lyc38, lyc39);
+    aleaPack(newLycClasses, enclos2_4, lyc45, lyc51);
+    aleaPack(newLycClasses, enclos2_5, lyc59, lyc60);
     
     List<String> categ = new ArrayList<>();
     categ.add("ZOO");
@@ -356,14 +397,13 @@ public class Main {
     zoos.add(zoo0);
     zoos.add(zoo1);
     zoos.add(zoo2);
-    int zoosIndex = 0;
+    int zooIndex = 0;
 
     int enclosIndex = 0;
     int creatIndex = 0;
     
     clearConsole();
-    displayZoo(zoos.get(zoosIndex));
-    displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+   displayZoo(zoos.get(zooIndex));  displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
     Scanner sc = new Scanner(System.in);
     String mainInput = scanKeys(sc);
 
@@ -378,42 +418,47 @@ public class Main {
           categIndex = categ.size() - 1;
         }
         clearConsole();
-        displayZoo(zoos.get(zoosIndex));
+        displayZoo(zoos.get(zooIndex));
+        /*
         displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+        */
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
       }
 
       if (mainInput.equals("q") || mainInput.equals("Q")) {
         if (categ.get(categIndex) == "ZOO" || categ.get(categIndex) == "MAÎTRE") {
-          --zoosIndex;
-          if (zoosIndex < 0) {
-            zoosIndex = zoos.size() - 1;
+          --zooIndex;
+          enclosIndex = 0;
+          if (zooIndex < 0) {
+            zooIndex = zoos.size() - 1;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "ENCLOS") {
           --enclosIndex;
+          creatIndex = 0;
           if (enclosIndex < 0) {
-            enclosIndex = zoos.get(zoosIndex).getEnclosures().size() - 1;
+            enclosIndex = zoos.get(zooIndex).getEnclosures().size() - 1;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "CRÉATURE") {
           --creatIndex;
           if (creatIndex < 0) {
-            creatIndex = zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().size() - 1;
+            creatIndex = zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().size() - 1;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else {
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
       }
 
@@ -423,42 +468,130 @@ public class Main {
           categIndex = 0;
         }
         clearConsole();
-        displayZoo(zoos.get(zoosIndex));
-        displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
       }
 
       if (mainInput.equals("d") || mainInput.equals("D")) {
         if (categ.get(categIndex) == "ZOO" || categ.get(categIndex) == "MAÎTRE") {
-          ++zoosIndex;
-          if (zoosIndex == zoos.size()) {
-            zoosIndex = 0;
+          ++zooIndex;
+          enclosIndex = 0;
+          if (zooIndex == zoos.size()) {
+            zooIndex = 0;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "ENCLOS") {
           ++enclosIndex;
-          if (enclosIndex == zoos.get(zoosIndex).getEnclosures().size()) {
+          creatIndex = 0;
+          if (enclosIndex == zoos.get(zooIndex).getEnclosures().size()) {
             enclosIndex = 0;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "CRÉATURE") {
           ++creatIndex;
-          if (creatIndex == zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().size()) {
+          if (creatIndex == zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().size()) {
             creatIndex = 0;
           }
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else {
           clearConsole();
-          displayZoo(zoos.get(zoosIndex));
-          displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        }
+      }
+
+      if (mainInput.equals("ajt")) { //ajouter une créature
+        if (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() < enclosParam(zoos, zooIndex, enclosIndex).getMaxCreaturesNb()) {
+         
+          int aleaCreatIndex0 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+          int aleaCreatIndex1 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+          int aleaCreatIndex2 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+
+          Creature newCreat = new Creature(
+            creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName(),
+            (Math.random() < 0.5) ? "mâle" : "femelle",
+            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getWeight(),
+            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getTall(),
+            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getAge(),
+            (int) Math.round(30 + (Math.random() * 90)),
+            (Math.random() < 0.1) ? true : false,
+            (int) Math.round(30 + (Math.random() * 90)),
+            ""
+          );  
+
+          enclosParam(zoos, zooIndex, enclosIndex).addCreature(newCreat);
+          clearConsole();
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+          System.out.println("Une nouvelle créature a été rajoutée à l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
+        }
+      }
+      
+      if (mainInput.equals("elv")) { //enlever une créature
+        enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+        clearConsole();
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        System.out.println("La créature a été enlevée de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
+      }
+      
+      if (mainInput.equals("sgn")) { //soigner une créature
+        creatParam(zoos, zooIndex, enclosIndex, creatIndex).heal();
+        clearConsole();
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        System.out.println("La créature a été soignée");
+      }
+      
+      if (mainInput.equals("nrr")) { //nourrir les créatures
+        for (int i = 0; i < enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size(); ++i) {
+          creatParam(zoos, zooIndex, enclosIndex, i).feed();
+        }
+        clearConsole();
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        System.out.println("Les créatures de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName() + " ont été nourries");
+      }
+      
+      if (mainInput.equals("tfr")) { //transférer une créature
+        enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+        List<Enclosure> otherEnclos = new ArrayList<>();
+        for (int i = 0; i < zoos.get(zooIndex).getEnclosures().size(); ++i) {
+          if (creatParam(zoos, zooIndex, i, 0).getSpeciesName() == creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName() && enclosParam(zoos, zooIndex, i) != enclosParam(zoos, zooIndex, enclosIndex)) {
+            otherEnclos.add(enclosParam(zoos, zooIndex, i));
+          }
+        }
+
+        int randomI = (int) Math.round(Math.random() * otherEnclos.size());
+        otherEnclos.get(randomI).addCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+        clearConsole();
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        System.out.println("La créature a été transférée vers l'enclos " + otherEnclos.get(randomI).getEnclosureName());
+      }
+      
+      if (mainInput.equals("ett")) { //entretenir un enclos
+        enclosParam(zoos, zooIndex, enclosIndex).clean();
+        if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "fait") {
+          clearConsole();
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+          System.out.println("L'enclos a été nettoyé");
+        }
+        else if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "pas possible") {
+          clearConsole();
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+          System.out.println("L'enclos contient encore des créatures et/ou son état est bon");
         }
       }
     }
