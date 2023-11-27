@@ -403,7 +403,7 @@ public class Main {
     int creatIndex = 0;
     
     clearConsole();
-   displayZoo(zoos.get(zooIndex));  displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+    displayZoo(zoos.get(zooIndex));  displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
     Scanner sc = new Scanner(System.in);
     String mainInput = scanKeys(sc);
 
