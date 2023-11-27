@@ -6,7 +6,6 @@ public class Enclosure {
   String enclosureName;
   int area;
   int maxCreaturesNb;
-  int creaturesNb;
   List<Creature> creatures = new ArrayList<>();
   String cleanliness;
   public Enclosure(String enclosureName, int area, int maxCreaturesNb, List<Creature> creatures, String cleanliness) {
@@ -38,22 +37,31 @@ public class Enclosure {
   }
 
   public void addCreature(Creature theCreature) {
-    this.creatures.add(theCreature);
+    List<Creature> creatures2 = new ArrayList<>(creatures);
+    creatures2.add(theCreature);
+    this.creatures = creatures2;
   }
 
   public void removeCreature(Creature theCreature) {
-    this.creatures.remove(theCreature);
+    List<Creature> creatures2 = new ArrayList<>(creatures);
+    creatures2.remove(theCreature);
+    this.creatures = creatures2;
   }
 
   public void feedCreatures(int plus) {
-    for (int i = 0; i < this.creaturesNb; ++i) {
-      this.creatures.get(i).eat(plus);
+    for (int i = 0; i < this.creatures.size(); ++i) {
+      this.creatures.get(i).setHungryIndicator(plus);
     }
   }
 
-  public void clean() {
-    if (this.cleanliness == "mauvais" && this.creaturesNb == 0) {
+  public String clean() {
+    if ((this.cleanliness == "mauvais" || this.cleanliness == "correct") && this.creatures.size() == 0) {
       this.cleanliness = "bon";
+      return "fait";
+    }
+    else {
+      return "pas possible";
     }
   }
 }
+
