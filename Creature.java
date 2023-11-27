@@ -72,15 +72,22 @@ public class Creature {
     this.healthIndicator = healthIndicator;
   }
 
-  public void eat(int plus) {
+  public void feed() {
     if (this.sleepIndicator == false) {
-      this.hungryIndicator += plus;
+      if (hungryIndicator + 10 <= 100) {
+        this.hungryIndicator += 10;
+      }
+      else {
+        this.hungryIndicator = 100;
+      }
     }
   }
 
-  public void heal(int plus) {
-    this.healthIndicator += plus;
-    if (this.healthIndicator > 100) {
+  public void heal() {
+    if (healthIndicator + 10 <= 100) {
+      this.healthIndicator += 10;
+    }
+    else {
       this.healthIndicator = 100;
     }
   }
@@ -94,8 +101,8 @@ public class Creature {
     }
   }
 
-  public void growOlder(int plus) {
-    this.age += plus;
+  public void growOlder() {
+    this.age += 1;
   }
 
   public void initAbility() {
@@ -110,7 +117,7 @@ public class Creature {
     }
   }
 
-  public void initReproductionMode() {
+  public String initReproductionMode() {
     if (this.gender == "femelle") {
       if (Arrays.asList("lycanthrope", "licorne", "nymphe", "sirène").contains(this.speciesName)) {
         reproductionMode = "vivipare";
@@ -122,5 +129,6 @@ public class Creature {
     else if (this.gender == "mâle") {
       reproductionMode = "-";
     }
+    return reproductionMode;
   }
 }
