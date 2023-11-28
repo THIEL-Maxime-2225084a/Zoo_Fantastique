@@ -1,6 +1,8 @@
 package proj;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Creature {
   private String speciesName;
@@ -14,6 +16,7 @@ public class Creature {
   private String emittedSound;
   private String ability;
   private String reproductionMode;
+  List<Lycanthrope> lycList = new ArrayList<>();
 
   public Creature(String speciesName, String gender, double weight, double tall, int age, int hungryIndicator,
       boolean sleepIndicator, int healthIndicator, String emittedSound) {
@@ -26,6 +29,11 @@ public class Creature {
     this.sleepIndicator = sleepIndicator;
     this.healthIndicator = healthIndicator;
     this.emittedSound = emittedSound;
+
+    if (speciesName.equals("lycanthrope")) {
+      Lycanthrope lyc = new Lycanthrope (this, (int) Math.round(30 + Math.random() * 70), 1, (Math.random() < 0.7) ? "β" : "ω", 1, (int) Math.round(30 + Math.random() * 70), (Math.random() < 0.8) ? true : false);
+      lycList.add(lyc);
+    }
   }
 
   public String getSpeciesName() {
@@ -58,6 +66,14 @@ public class Creature {
 
   public int getHealthIndicator() {
     return this.healthIndicator;
+  }
+
+  public String getEmittedSound() {
+    return this.emittedSound;
+  }
+
+  public List<Lycanthrope> getLycList() {
+    return lycList;
   }
 
   public void setHungryIndicator(int hungryIndicator) {
