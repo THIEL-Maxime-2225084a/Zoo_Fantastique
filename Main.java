@@ -377,16 +377,7 @@ public class Main {
     FantasticZoo zoo0 = new FantasticZoo("Zoo n°0", maitreA, 8, Arrays.asList(enclos0_0, enclos0_1, enclos0_2, enclos0_3, enclos0_4, enclos0_5));
     FantasticZoo zoo1 = new FantasticZoo("Zoo n°1", maitreB, 5, Arrays.asList(enclos1_0, enclos1_1, enclos1_2, enclos1_3));
     FantasticZoo zoo2 = new FantasticZoo("Zoo n°2", maitreC, 7, Arrays.asList(enclos2_0, enclos2_1, enclos2_2, enclos2_3, enclos2_4, enclos2_5, enclos2_6));
-/*
-    List<Lycanthrope> newLycClasses = new ArrayList<>();
-    aleaPack(newLycClasses, enclos0_0, lyc0, lyc3);
-    aleaPack(newLycClasses, enclos0_4, lyc7, lyc8);
-    aleaPack(newLycClasses, enclos1_1, lyc18, lyc21);
-    aleaPack(newLycClasses, enclos1_2, lyc26, lyc29);
-    aleaPack(newLycClasses, enclos2_2, lyc38, lyc39);
-    aleaPack(newLycClasses, enclos2_4, lyc45, lyc51);
-    aleaPack(newLycClasses, enclos2_5, lyc59, lyc60);
-*/    
+    
     List<String> categ = new ArrayList<>();
     categ.add("ZOO");
     categ.add("MAÎTRE");
@@ -405,9 +396,11 @@ public class Main {
     int creatIndex = 0;
     
     clearConsole();
-    displayZoo(zoos.get(zooIndex));     displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+    displayZoo(zoos.get(zooIndex));
+    displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+
     Scanner sc = new Scanner(System.in);
-    String mainInput = scanKeys(sc);
+    String mainInput = "";
 
     boolean loop = true;
 
@@ -421,22 +414,16 @@ public class Main {
         }
         clearConsole();
         displayZoo(zoos.get(zooIndex));
-        /*
-        displayCharacteristics(zoos.get(zoosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex), zoos.get(zoosIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
-        */
         displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
       }
 
-      if (mainInput.equals("q") || mainInput.equals("Q")) {
+      else if (mainInput.equals("q") || mainInput.equals("Q")) {
         if (categ.get(categIndex) == "ZOO" || categ.get(categIndex) == "MAÎTRE") {
           --zooIndex;
           enclosIndex = 0;
           if (zooIndex < 0) {
             zooIndex = zoos.size() - 1;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "ENCLOS") {
           --enclosIndex;
@@ -444,27 +431,21 @@ public class Main {
           if (enclosIndex < 0) {
             enclosIndex = zoos.get(zooIndex).getEnclosures().size() - 1;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "CRÉATURE") {
           --creatIndex;
           if (creatIndex < 0) {
             creatIndex = zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().size() - 1;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
-        else {
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        }
+        
+        clearConsole();
+        displayZoo(zoos.get(zooIndex));
+        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+        
       }
 
-      if (mainInput.equals("s") || mainInput.equals("S")) {
+      else if (mainInput.equals("s") || mainInput.equals("S")) {
         ++categIndex;
         if (categIndex == categ.size()) {
           categIndex = 0;
@@ -474,16 +455,13 @@ public class Main {
         displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
       }
 
-      if (mainInput.equals("d") || mainInput.equals("D")) {
+      else if (mainInput.equals("d") || mainInput.equals("D")) {
         if (categ.get(categIndex) == "ZOO" || categ.get(categIndex) == "MAÎTRE") {
           ++zooIndex;
           enclosIndex = 0;
           if (zooIndex == zoos.size()) {
             zooIndex = 0;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "ENCLOS") {
           ++enclosIndex;
@@ -491,109 +469,106 @@ public class Main {
           if (enclosIndex == zoos.get(zooIndex).getEnclosures().size()) {
             enclosIndex = 0;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
         else if (categ.get(categIndex) == "CRÉATURE") {
           ++creatIndex;
           if (creatIndex == zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().size()) {
             creatIndex = 0;
           }
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
         }
-        else {
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        }
-      }
 
-      if (mainInput.equals("ajt")) { //ajouter une créature
-        if (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() < enclosParam(zoos, zooIndex, enclosIndex).getMaxCreaturesNb()) {
-         
-          int aleaCreatIndex0 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
-          int aleaCreatIndex1 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
-          int aleaCreatIndex2 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
-
-          Creature newCreat = new Creature(
-            creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName(),
-            (Math.random() < 0.5) ? "mâle" : "femelle",
-            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getWeight(),
-            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getTall(),
-            creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getAge(),
-            (int) Math.round(30 + (Math.random() * 90)),
-            (Math.random() < 0.1) ? true : false,
-            (int) Math.round(30 + (Math.random() * 90)),
-            ""
-          );  
-
-          enclosParam(zoos, zooIndex, enclosIndex).addCreature(newCreat);
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-          System.out.println("Une nouvelle créature a été rajoutée à l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
-        }
-      }
-      
-      if (mainInput.equals("elv")) { //enlever une créature
-        enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
         clearConsole();
         displayZoo(zoos.get(zooIndex));
         displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        System.out.println("La créature a été enlevée de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
       }
-      
-      if (mainInput.equals("sgn")) { //soigner une créature
-        creatParam(zoos, zooIndex, enclosIndex, creatIndex).heal();
-        clearConsole();
-        displayZoo(zoos.get(zooIndex));
-        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        System.out.println("La créature a été soignée");
-      }
-      
-      if (mainInput.equals("nrr")) { //nourrir les créatures
-        for (int i = 0; i < enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size(); ++i) {
-          creatParam(zoos, zooIndex, enclosIndex, i).feed();
-        }
-        clearConsole();
-        displayZoo(zoos.get(zooIndex));
-        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        System.out.println("Les créatures de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName() + " ont été nourries");
-      }
-      
-      if (mainInput.equals("tfr")) { //transférer une créature
-        enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
-        List<Enclosure> otherEnclos = new ArrayList<>();
-        for (int i = 0; i < zoos.get(zooIndex).getEnclosures().size(); ++i) {
-          if (creatParam(zoos, zooIndex, i, 0).getSpeciesName() == creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName() && enclosParam(zoos, zooIndex, i) != enclosParam(zoos, zooIndex, enclosIndex)) {
-            otherEnclos.add(enclosParam(zoos, zooIndex, i));
+        
+      if (categ.get(categIndex) == "ACTION") {
+        if (mainInput.equals("ajt")) { //ajouter une créature
+          if (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() < enclosParam(zoos, zooIndex, enclosIndex).getMaxCreaturesNb()) {
+             
+            int aleaCreatIndex0 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+            int aleaCreatIndex1 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+            int aleaCreatIndex2 = (int) Math.round(Math.random() * (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size() - 2));
+    
+            Creature newCreat = new Creature(
+              creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName(),
+              (Math.random() < 0.5) ? "mâle" : "femelle",
+              creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getWeight(),
+              creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getTall(),
+              creatParam(zoos, zooIndex, enclosIndex, aleaCreatIndex0).getAge(),
+              (int) Math.round(30 + (Math.random() * 90)),
+              (Math.random() < 0.1) ? true : false,
+              (int) Math.round(30 + (Math.random() * 90)),
+              ""
+            );  
+    
+            enclosParam(zoos, zooIndex, enclosIndex).addCreature(newCreat);
+            clearConsole();
+            displayZoo(zoos.get(zooIndex));
+            displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+            System.out.println("Une nouvelle créature a été rajoutée à l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
           }
         }
-
-        int randomI = (int) Math.round(Math.random() * otherEnclos.size());
-        otherEnclos.get(randomI).addCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
-        clearConsole();
-        displayZoo(zoos.get(zooIndex));
-        displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-        System.out.println("La créature a été transférée vers l'enclos " + otherEnclos.get(randomI).getEnclosureName());
-      }
-      
-      if (mainInput.equals("ett")) { //entretenir un enclos
-        enclosParam(zoos, zooIndex, enclosIndex).clean();
-        if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "fait") {
-          clearConsole();
-          displayZoo(zoos.get(zooIndex));
-          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-          System.out.println("L'enclos a été nettoyé");
+          
+        else if (mainInput.equals("elv")) { //enlever une créature
+          if (enclosParam(zoos, zooIndex, enclosIndex).getCreatures().contains(creatParam(zoos, zooIndex, enclosIndex, creatIndex))) {
+            enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+            clearConsole();
+            displayZoo(zoos.get(zooIndex));
+            displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+            System.out.println("La créature a été enlevée de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName());
+          }
         }
-        else if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "pas possible") {
+          
+        else if (mainInput.equals("sgn")) { //soigner une créature
+          creatParam(zoos, zooIndex, enclosIndex, creatIndex).heal();
           clearConsole();
           displayZoo(zoos.get(zooIndex));
           displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
-          System.out.println("L'enclos contient encore des créatures et/ou son état est bon");
+          System.out.println("La créature a été soignée");
+        }
+          
+        else if (mainInput.equals("nrr")) { //nourrir les créatures
+          for (int i = 0; i < enclosParam(zoos, zooIndex, enclosIndex).getCreatures().size(); ++i) {
+            creatParam(zoos, zooIndex, enclosIndex, i).feed();
+          }
+          clearConsole();
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+          System.out.println("Les créatures de l'enclos " + enclosParam(zoos, zooIndex, enclosIndex).getEnclosureName() + " ont été nourries");
+        }
+          
+        else if (mainInput.equals("tfr")) { //transférer une créature
+          enclosParam(zoos, zooIndex, enclosIndex).removeCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+          List<Enclosure> otherEnclos = new ArrayList<>();
+          for (int i = 0; i < zoos.get(zooIndex).getEnclosures().size(); ++i) {
+            if (creatParam(zoos, zooIndex, i, 0).getSpeciesName() == creatParam(zoos, zooIndex, enclosIndex, creatIndex).getSpeciesName() && enclosParam(zoos, zooIndex, i) != enclosParam(zoos, zooIndex, enclosIndex)) {
+              otherEnclos.add(enclosParam(zoos, zooIndex, i));
+            }
+          }
+    
+          int randomI = (int) Math.round(Math.random() * otherEnclos.size());
+          otherEnclos.get(randomI).addCreature(creatParam(zoos, zooIndex, enclosIndex, creatIndex));
+          clearConsole();
+          displayZoo(zoos.get(zooIndex));
+          displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+          System.out.println("La créature a été transférée vers l'enclos " + otherEnclos.get(randomI).getEnclosureName());
+        }
+          
+        else if (mainInput.equals("ett")) { //entretenir un enclos
+          enclosParam(zoos, zooIndex, enclosIndex).clean();
+          if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "fait") {
+            clearConsole();
+            displayZoo(zoos.get(zooIndex));
+            displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+            System.out.println("L'enclos a été nettoyé");
+          }
+          else if (enclosParam(zoos, zooIndex, enclosIndex).clean() == "pas possible") {
+            clearConsole();
+            displayZoo(zoos.get(zooIndex));
+            displayCharacteristics(zoos.get(zooIndex), enclosParam(zoos, zooIndex, enclosIndex), creatParam(zoos, zooIndex, enclosIndex, creatIndex), categ.get(categIndex));
+            System.out.println("L'enclos contient encore des créatures et/ou son état est bon");
+          }
         }
       }
     }
