@@ -33,6 +33,10 @@ public class Lycanthrope {
     return ageCategory;
   }
 
+  public Creature getLyc() {
+    return this.lyc;
+  }
+
   public int getStrength() {
     return this.strength;
   }
