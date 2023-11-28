@@ -84,7 +84,20 @@ public class Main {
     }
   }
 
-  public static void displayCharacteristics(FantasticZoo zooObj, Enclosure enclosureObj, Creature creatureObj, String category) {
+  public static int searchForLyc(Creature creatureObj) {
+    int r = -1;
+    if (creatureObj.getSpeciesName() == "lycanthrope") {
+      for (int i = 0; i < creatureObj.getLycList().size(); ++i) {
+        if (creatureObj.getLycList().get(i).getLyc() == creatureObj) {
+          r = i;
+          break;
+        }
+      }
+    }
+    return r;
+  }
+
+  public static void displayCharacteristics(FantasticZoo zooObj,  Enclosure enclosureObj, Creature creatureObj, String category) {
     if (category == "ZOO") {
       System.out.println(
         sameCharacter("█", 30) + "\n" +
@@ -156,13 +169,13 @@ public class Main {
       );
       if (creatureObj.getSpeciesName() == "lycanthrope") {
         System.out.println(
-          "█ Force : " + "\n" +
-          "█ Facteur de domination : " + "\n" +
-          "█ Rang de domination : " + "\n" +
-          "█ Niveau : " + "\n" +
-          "█ Facteur d'impétuosité : " + "\n" +
-          "█ Meute : " + "\n" +
-          "█ Catégorie d'âge : "
+          "█ Force : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getStrength() + "\n" +
+          "█ Facteur de domination : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getDominationFactor() + "\n" +
+          "█ Rang de domination : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getDominationRank() + "\n" +
+          "█ Niveau : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getLevel() + "\n" +
+          "█ Facteur d'impétuosité : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getImpetuosityFactor() + "\n" +
+          "█ Meute : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).getPack() + "\n" +
+          "█ Catégorie d'âge : " + creatureObj.getLycList().get(searchForLyc(creatureObj)).initAgeCategory()
         );
       }
     }
@@ -199,17 +212,6 @@ public class Main {
   public static void clearConsole() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
-  }
-
-  public static void aleaPack(List<Lycanthrope> lycList, Enclosure lycEnclosureName, Creature lycAlphaMale, Creature lycAlphaFemale) {
-    for (int i = 0; i < lycEnclosureName.getCreatures().size(); ++i) {
-      if (lycEnclosureName.getCreatures().get(i) == lycAlphaMale || lycEnclosureName.getCreatures().get(i) == lycAlphaFemale) {
-        lycList.add(new Lycanthrope(lycEnclosureName.getCreatures().get(i), (int) Math.round(30 + (Math.random() * 70)), 1, "α", 1, (int) Math.round(30 + (Math.random() * 70)), (Math.random() < 0.8) ? true : false));
-      }
-      else {
-        lycList.add(new              Lycanthrope(lycEnclosureName.getCreatures().get(i), (int) Math.round(30 + (Math.random() * 70)), 1, (Math.random() < 0.7) ? "β" : "ω", 1, (int) Math.round(30 + (Math.random() * 70)), (Math.random() < 0.8) ? true : false));
-      }
-    }
   }
 
   public static Enclosure enclosParam(List<FantasticZoo> zoosList, int zooI, int enclosI) { //obtenir le nom d'un objet Enclosure
@@ -375,7 +377,7 @@ public class Main {
     FantasticZoo zoo0 = new FantasticZoo("Zoo n°0", maitreA, 8, Arrays.asList(enclos0_0, enclos0_1, enclos0_2, enclos0_3, enclos0_4, enclos0_5));
     FantasticZoo zoo1 = new FantasticZoo("Zoo n°1", maitreB, 5, Arrays.asList(enclos1_0, enclos1_1, enclos1_2, enclos1_3));
     FantasticZoo zoo2 = new FantasticZoo("Zoo n°2", maitreC, 7, Arrays.asList(enclos2_0, enclos2_1, enclos2_2, enclos2_3, enclos2_4, enclos2_5, enclos2_6));
-
+/*
     List<Lycanthrope> newLycClasses = new ArrayList<>();
     aleaPack(newLycClasses, enclos0_0, lyc0, lyc3);
     aleaPack(newLycClasses, enclos0_4, lyc7, lyc8);
@@ -384,7 +386,7 @@ public class Main {
     aleaPack(newLycClasses, enclos2_2, lyc38, lyc39);
     aleaPack(newLycClasses, enclos2_4, lyc45, lyc51);
     aleaPack(newLycClasses, enclos2_5, lyc59, lyc60);
-    
+*/    
     List<String> categ = new ArrayList<>();
     categ.add("ZOO");
     categ.add("MAÎTRE");
@@ -403,7 +405,7 @@ public class Main {
     int creatIndex = 0;
     
     clearConsole();
-    displayZoo(zoos.get(zooIndex));  displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
+    displayZoo(zoos.get(zooIndex));     displayCharacteristics(zoos.get(zooIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex), zoos.get(zooIndex).getEnclosures().get(enclosIndex).getCreatures().get(creatIndex), categ.get(categIndex));
     Scanner sc = new Scanner(System.in);
     String mainInput = scanKeys(sc);
 
